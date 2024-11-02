@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Configure SSH configuration file
-Host 
+Host 98.98.98.98 
 IdentityFile ~/.ssh/school
 PasswordAuthentication no
