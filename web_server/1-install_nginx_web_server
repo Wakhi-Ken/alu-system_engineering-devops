@@ -3,31 +3,21 @@
 
 sudo apt-get update -y && \
 sudo apt-get install -y nginx
-if [ $? -eq 0 ]
-then
-    echo -e \
-"http {
-    root /var/www/school;
-    index index.html;
-    server {
-        listen 80;
-        location \ {
-        }
+
+cat << EOF > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ =404;
+        add_header Content-Type text/html;
+        echo "Holberton School";
     }
 }
-events {
-}" > /etc/nginx/nginx.conf
-    mkdir -p /var/www/school
-    echo "Hello World!" > \
-	/var/www/school/index.html
-    service nginx start
-    if [ $? -ne 0 ]
-    then
-	"Problem starting nginx"
-	exit 1
-    fi
-else
-    echo "Could not install nginx"
-    exit 1
-fi
-exit 0
+EOF
